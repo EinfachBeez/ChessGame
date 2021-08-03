@@ -53,3 +53,9 @@ dkms.conf
 
 # VS Ordner
 .vs
+
+# VS Data
+Simple-Chess-Game/Simple-Chess-Game.vcxproj
+Simple-Chess-Game/Simple-Chess-Game.vcxproj.filters
+Simple-Chess-Game/Simple-Chess-Game.vcxproj.user
+Simple-Chess-Game/Debug
