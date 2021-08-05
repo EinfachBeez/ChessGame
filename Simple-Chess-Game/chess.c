@@ -103,9 +103,15 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 			if ((target_index_y - 1 == start_index_y || (target_index_y - 2 == start_index_y))) {
 				isLegal = true;
 			}
+			else {
+				isLegal = false;
+			}
 		} else {
 			if (target_index_y - 1 == start_index_y) {
 				isLegal = true;
+			}
+			else {
+				isLegal = false;
 			}
 		}
 	} else {
@@ -116,9 +122,15 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 			if ((target_index_y + 1 == start_index_y) || (target_index_y + 2 == start_index_y)) {
 				isLegal = true;
 			}
+			else {
+				isLegal = false;
+			}
 		} else {
 			if (target_index_y + 1 == start_index_y) {
 				isLegal = true;
+			}
+			else {
+				isLegal = false;
 			}
 		}
 	}
@@ -126,27 +138,37 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	return isLegal;
 }
 
-void rook(void) {
+bool rook(int* target_position, int* start_position, char chosen_figure) {
+	bool isLegal = false;
 
+	return isLegal;
 }
 
-void night(void) {
+bool night(int* target_position, int* start_position, char chosen_figure) {
+	bool isLegal = false;
 
+	return isLegal;
 }
 
-void bishop(void) {
+bool bishop(int* target_position, int* start_position, char chosen_figure) {
+	bool isLegal = false;
 
+	return isLegal;
 }
 
-void king(void) {
+bool king(int* target_position, int* start_position, char chosen_figure) {
+	bool isLegal = false;
 
+	return isLegal;
 }
 
-void queen(void) {
+bool queen(int* target_position, int* start_position, char chosen_figure) {
+	bool isLegal = false;
 
+	return isLegal;
 }
 
-void chooseColor(void) {
+bool chooseColor(void) {
 	int input;
 
 	printf("Welcome to Chess\nWhat color would you like to choose ? " ANSI_COLOR_MAGENTA "White (1) " ANSI_COLOR_CYAN "Black (2)\n" ANSI_COLOR_RESET);
@@ -301,35 +323,36 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 		break;
 	// Rook White
 	case 'R':
+	// Rook Black
+	case 'r':
+		isPossible = rook(target_position, start_position, chosen_figure);
 		break;
 	// Night White
 	case 'N':
+	// Night Black
+	case 'n':
+		isPossible = night(target_position, start_position, chosen_figure);
 		break;
 	// Bishop White
 	case 'B':
+	// Bishop Black
+	case 'b':
+		isPossible = bishop(target_position, start_position, chosen_figure);
 		break;
 	// King White
 	case 'K':
+	// King Black
+	case 'k':
+		isPossible = king(target_position, start_position, chosen_figure);
 		break;
 	// Queen White
 	case 'Q':
-		break;
-	// Rook Black
-	case 'r':
-		break;
-	// Night Black
-	case 'n':
-		break;
-	// Bishop Black
-	case 'b':
-		break;
-	// King Black
-	case 'k':
-		break;
 	// Queen Black
 	case 'q':
+		isPossible = queen(target_position, start_position, chosen_figure);
 		break;
 	default:
+		
 		break;
 	}
 
