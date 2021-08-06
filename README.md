@@ -19,4 +19,3 @@ So the console will look a bit funny.
 - Pawn Rules (Hit Rule, Check rule for multible squares at first move, Pawn transform)
 - No king next to king
 - Patt (when both players have only one king left)
--
