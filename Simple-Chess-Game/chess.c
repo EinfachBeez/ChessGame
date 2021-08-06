@@ -127,8 +127,20 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 }
 
 bool rook(int* target_position, int* start_position, char chosen_figure) {
+	// Can move any number of squares horizontally or vertically
 	bool isLegal = false;
 
+	// Start position axis
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+
+
+	if ((target_index_x != start_index_x && target_index_y == start_index_y) || (target_index_y != start_index_y && target_index_x == start_index_x)) {
+		isLegal = true;
+	}
 	return isLegal;
 }
 
@@ -145,8 +157,29 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 }
 
 bool king(int* target_position, int* start_position, char chosen_figure) {
+	// Can move one square in any direction (horizontally, vertically, or diagonally)
 	bool isLegal = false;
 
+	// Start position axis
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+
+	if ((target_index_x + 1 == start_index_x && target_index_y + 1 == start_index_y) || (target_index_x + 1 == start_index_x && target_index_y - 1 == start_index_y)) {
+		isLegal = true;
+	} else if ((target_index_x - 1 == start_index_x && target_index_y + 1 == start_index_y) || (target_index_x - 1 == start_index_x && target_index_y - 1 == start_index_y)) {
+		isLegal = true;
+	}
+	else {
+		if ((target_index_x + 1 == start_index_x && target_index_y == start_index_y) || (target_index_x - 1 == start_index_x && target_index_y == start_index_y)) {
+			isLegal = true;
+		}
+		else if ((target_index_y + 1 == start_index_y && target_index_x == start_index_x) || (target_index_y - 1 == start_index_y && target_index_x == start_index_x)) {
+			isLegal = true;
+		}
+	}
 	return isLegal;
 }
 
@@ -181,6 +214,7 @@ again:
 	}
 
 	clearInputQueue();
+
 }
 
 
@@ -290,9 +324,6 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 					//convert char-number into real int by calculating distance between ascii-characters
 					//and then move number to array
 					position[k] = position_input[i] - '0';
-
-					//todo: check ob position[k] out of Bound ist (>7 oder <0). Wenn out of bound: inBound false setzen, User-Feedback geben mit Fehlermeldung
-					//und am Ende schleife abbrechen mit break
 
 					if (position[k] > 7 || position[k] < 0) {
 						inBound = false;
