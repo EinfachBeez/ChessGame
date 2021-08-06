@@ -89,29 +89,23 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	bool isLegal = false;
 
 	//start position axis
-	int start_index_x = start_position[1];
-	int start_index_y = start_position[0];
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
 	//target position axis
-	int target_index_x = target_position[1];
-	int target_index_y = target_position[0];
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
 
 	if (current_player_white == true) {
 		// Counts up the pawnvalue to check if this move is the first pawn move 
 		pawnvalue[start_index_x]++;
 		// Checks if the pawnvalue is 1. When the value is 1 it's the first pawn move
 		if (pawnvalue[start_index_x] == 1) {
-			if ((target_index_y - 1 == start_index_y || (target_index_y - 2 == start_index_y))) {
+			if ((target_index_y + 1 == start_index_y || (target_index_y + 2 == start_index_y))) {
 				isLegal = true;
-			}
-			else {
-				isLegal = false;
 			}
 		} else {
-			if (target_index_y - 1 == start_index_y) {
+			if (target_index_y + 1 == start_index_y) {
 				isLegal = true;
-			}
-			else {
-				isLegal = false;
 			}
 		}
 	} else {
@@ -119,18 +113,12 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 		pawnblackvalue[start_index_x]++;
 		// Checks if the pawnblackvalue is 1. When the value is 1 it's the first pawn move
 		if (pawnblackvalue[start_index_x] == 1) {
-			if ((target_index_y + 1 == start_index_y) || (target_index_y + 2 == start_index_y)) {
+			if ((target_index_y - 1 == start_index_y) || (target_index_y - 2 == start_index_y)) {
 				isLegal = true;
-			}
-			else {
-				isLegal = false;
 			}
 		} else {
-			if (target_index_y + 1 == start_index_y) {
+			if (target_index_y - 1 == start_index_y) {
 				isLegal = true;
-			}
-			else {
-				isLegal = false;
 			}
 		}
 	}
@@ -279,32 +267,40 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 	//return position;
 	int i, k = 0;
 	char position_input[4];
+	bool isLegal = false;
+	//todo do while with: create boolean variable and check if read in position is in bound -> if out of found -> error message aaaand again.
 
-	printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
-	// Get user input to store the position where the player wants to have his figure
-	fgets(position_input, sizeof(position_input), stdin);
+		printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
-	//get length of read in string
-	int len = strlen(position_input);
+		// Get user input to store the position where the player wants to have his figure
+		fgets(position_input, sizeof(position_input), stdin);
 
-	//check if user input has digits (ints) and move them to integer array
-	while (len > 0 && isspace(position_input[len - 1]))
-		len--;
+		//get length of read in string
+		int len = strlen(position_input);
 
-	if (len > 0) {
-		for (i = 0; i < len; i++) {
-			if (isdigit(position_input[i])) {
-				//convert char-number into real int by calculating distance between ascii-characters
-				//and then move number to array
-				position[k] = position_input[i] - '0';
-				//increase index if still allowed
-				if (k < position_length - 1)
-					k++;
+		//check if user input has digits (ints) and move them to integer array
+		while (len > 0 && isspace(position_input[len - 1]))
+			len--;
+
+		if (len > 0) {
+			for (i = 0; i < len; i++) {
+				if (isdigit(position_input[i])) {
+					//convert char-number into real int by calculating distance between ascii-characters
+					//and then move number to array
+					position[k] = position_input[i] - '0';
+					//increase index if still allowed
+					if (k < position_length - 1)
+						k++;
+				}
 			}
 		}
-	}
-	printf("\n");
+
+		printf("\n");
+
+		clearInputQueue();
+		
+	//todo end of do while
 }
 
 bool checkType(int* target_position, int* start_position, char chosen_figure) {
@@ -356,6 +352,8 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 		break;
 	}
 
+	if (isPossible == false) printf("This action is " ANSI_COLOR_RED "not possible!" ANSI_COLOR_RESET);
+
 	return isPossible;
 }
 
@@ -363,14 +361,14 @@ void setPosition(int* target_position, int* start_position, char chosen_figure) 
 	// Set the position from the figure the player choose
 
 	//start position axis
-	int start_index_x = start_position[1];
-	int start_index_y = start_position[0];
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
 	//target position axis
-	int target_index_x = target_position[1];
-	int target_index_y = target_position[0];
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
 
-	board[start_index_x][start_index_y] = ' ';
-	board[target_index_x][target_index_y] = chosen_figure;
+	board[start_index_y][start_index_x] = ' ';
+	board[target_index_y][target_index_x] = chosen_figure;
 }
 
 void getCurrentColor() {
@@ -403,15 +401,14 @@ int main(void) {
 	do {
 		// Loop to repeat all chess relevant tasks
 
-			//todo pack in do while bis player die richtige Figur ausgewählt hat
-			
+		//do while bis player die richtige Figur ausgewaehlt hat	
 		do {
 
 			chooseCurrentPosition(current_position, current_position_length);
 
-			index_x = current_position[1];
-			index_y = current_position[0];
-			chosen_figure = board[index_x][index_y];
+			index_x = current_position[0];
+			index_y = current_position[1];
+			chosen_figure = board[index_y][index_x];
 
 		} while (isYourColor(chosen_figure) == false);
 
@@ -421,7 +418,7 @@ int main(void) {
 
 			isPossible = checkType(target_position, current_position, chosen_figure);
 
-		} while (isPossible == true);
+		} while (isPossible == false);
 
 		setPosition(target_position, current_position, chosen_figure);
 
