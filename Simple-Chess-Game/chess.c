@@ -267,10 +267,11 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 	//return position;
 	int i, k = 0;
 	char position_input[4];
-	bool isLegal = false;
+	bool inBound = true;
 	//todo do while with: create boolean variable and check if read in position is in bound -> if out of found -> error message aaaand again.
 
-
+	do
+	{
 		printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
 		// Get user input to store the position where the player wants to have his figure
@@ -289,6 +290,16 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 					//convert char-number into real int by calculating distance between ascii-characters
 					//and then move number to array
 					position[k] = position_input[i] - '0';
+
+					//todo: check ob position[k] out of Bound ist (>7 oder <0). Wenn out of bound: inBound false setzen, User-Feedback geben mit Fehlermeldung
+					//und am Ende schleife abbrechen mit break
+
+					if (position[k] > 7 || position[k] < 0) {
+						inBound = false;
+						printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
+						break;
+					}
+
 					//increase index if still allowed
 					if (k < position_length - 1)
 						k++;
@@ -299,7 +310,8 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 		printf("\n");
 
 		clearInputQueue();
-		
+	} while (inBound == false);
+
 	//todo end of do while
 }
 
@@ -352,7 +364,7 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 		break;
 	}
 
-	if (isPossible == false) printf("This action is " ANSI_COLOR_RED "not possible!" ANSI_COLOR_RESET);
+	if (isPossible == false) printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
 
 	return isPossible;
 }
@@ -425,8 +437,6 @@ int main(void) {
 		print_board(); // Print the default chess board from sratch
 
 		getCurrentColor();
-
-		clearInputQueue();
 		
 	// When end or win
 	} while (end == false);
