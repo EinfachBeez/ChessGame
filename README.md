@@ -8,3 +8,15 @@ Inspired by the university homework "Assignment 4: A Simplified Single-player Ch
 
 The compiled version in /out/compile can be run on Windows, but there is no ANSI color support like on Linux. 
 So the console will look a bit funny.
+
+## ToDo
+
+- Night with "L" move
+- Exit Game option
+- Hit Enemy / Winning Condition
+- Check if the position is already used
+- No Jump Over (except night)
+- Pawn Rules (Hit Rule, Check rule for multible squares at first move, Pawn transform)
+- No king next to king
+- Patt (when both players have only one king left)
+-
