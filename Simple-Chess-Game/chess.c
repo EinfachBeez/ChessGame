@@ -151,7 +151,29 @@ bool night(int* target_position, int* start_position, char chosen_figure) {
 }
 
 bool bishop(int* target_position, int* start_position, char chosen_figure) {
+	// Can move any number of squares diagonally
 	bool isLegal = false;
+
+	// Start position axis
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+
+	// Difference between target and start
+	int target_difference_x = target_index_x - start_index_x;
+	int target_difference_y = target_index_y - start_index_y;
+
+	int start_difference_x = start_index_x - target_index_x;
+	int start_difference_y = start_index_y - target_index_y;
+
+	if ((target_difference_x == start_difference_y) || (target_difference_x == target_difference_y)) {
+		isLegal = true;
+	}
+	else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
+		isLegal = true;
+	}
 
 	return isLegal;
 }
@@ -184,7 +206,34 @@ bool king(int* target_position, int* start_position, char chosen_figure) {
 }
 
 bool queen(int* target_position, int* start_position, char chosen_figure) {
+	// Can move any number of squares in any direction (vertically, horizontally, or diagonally)
 	bool isLegal = false;
+
+	// Start position axis
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+
+	// Difference between target and start
+	int target_difference_x = target_index_x - start_index_x;
+	int target_difference_y = target_index_y - start_index_y;
+
+	int start_difference_x = start_index_x - target_index_x;
+	int start_difference_y = start_index_y - target_index_y;
+
+	if ((target_difference_x == start_difference_y) || (target_difference_x == target_difference_y)) {
+		isLegal = true;
+	} else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
+		isLegal = true;
+	} else {
+		if ((target_index_x > start_index_x && target_difference_y == 0) || (target_index_x < start_index_x && target_difference_y == 0)) {
+			isLegal = true;
+		} else if ((target_index_y > start_index_y && target_difference_x == 0) || (target_index_y < start_index_y && target_difference_x == 0)) {
+			isLegal = true;
+		}
+	}
 
 	return isLegal;
 }
@@ -302,7 +351,6 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 	int i, k = 0;
 	char position_input[4];
 	bool inBound = true;
-	//todo do while with: create boolean variable and check if read in position is in bound -> if out of found -> error message aaaand again.
 
 	do
 	{
@@ -337,13 +385,11 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 				}
 			}
 		}
-
 		printf("\n");
 
 		clearInputQueue();
 	} while (inBound == false);
 
-	//todo end of do while
 }
 
 bool checkType(int* target_position, int* start_position, char chosen_figure) {
