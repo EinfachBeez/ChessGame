@@ -372,7 +372,7 @@ bool isYourColor(char chosen_figure) {
 
 }
 
-void chooseMovePosition(int* position, int position_length, char choosen_figure) {
+void chooseMovePosition(int* position, int position_length, char choosen_figure, bool isNotYourTeam) {
 	// Get the position on which field the player wants to have his figure
 	//return position;
 	int i, k = 0;
@@ -380,40 +380,49 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 	bool inBound = true;
 
 	do {
-		printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
+		do {
+			printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
-		// Get user input to store the position where the player wants to have his figure
-		fgets(position_input, sizeof(position_input), stdin);
+			// Get user input to store the position where the player wants to have his figure
+			fgets(position_input, sizeof(position_input), stdin);
 
-		//get length of read in string
-		int len = strlen(position_input);
+			//get length of read in string
+			int len = strlen(position_input);
 
-		//check if user input has digits (ints) and move them to integer array
-		while (len > 0 && isspace(position_input[len - 1]))
-			len--;
+			//check if user input has digits (ints) and move them to integer array
+			while (len > 0 && isspace(position_input[len - 1]))
+				len--;
 
-		if (len > 0) {
-			for (i = 0; i < len; i++) {
-				if (isdigit(position_input[i])) {
-					//convert char-number into real int by calculating distance between ascii-characters
-					//and then move number to array
-					position[k] = position_input[i] - '0';
+			if (len > 0) {
+				for (i = 0; i < len; i++) {
+					if (isdigit(position_input[i])) {
+						//convert char-number into real int by calculating distance between ascii-characters
+						//and then move number to array
+						position[k] = position_input[i] - '0';
 
-					if (position[k] > 7 || position[k] < 0) {
-						inBound = false;
-						printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
-						break;
+						if (position[k] > 7 || position[k] < 0) {
+							inBound = false;
+							printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
+							break;
+						}
+
+						//increase index if still allowed
+						if (k < position_length - 1)
+							k++;
 					}
-
-					//increase index if still allowed
-					if (k < position_length - 1)
-						k++;
 				}
 			}
-		}
-		printf("\n");
+			printf("\n");
 
-		clearInputQueue();
+			clearInputQueue();
+
+			// Todo: Check if position is possible or if there is a figure from another team there
+			if (charIsUpperCase(choosen_figure)) {
+
+			}
+
+			if (isNotYourTeam == false) printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
+		} while (isNotYourTeam == false);
 	} while (inBound == false);
 
 }
@@ -472,7 +481,7 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 	return isPossible;
 }
 
-void setPosition(int* target_position, int* start_position, char chosen_figure) {
+void setPosition(int* target_position, int* start_position, char chosen_figure, bool isNotYourTeam) {
 	// Set the position from the figure the player choose
 
 	//start position axis
@@ -482,8 +491,26 @@ void setPosition(int* target_position, int* start_position, char chosen_figure) 
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
 
-	board[start_index_y][start_index_x] = ' ';
-	board[target_index_y][target_index_x] = chosen_figure;
+	//
+	// INVALID
+	// Useless checks, todo: isNotYourTeam Check
+	// White Figure
+	if (charIsUpperCase(chosen_figure)) {
+		if (!charIsUpperCase(board[target_index_y][target_index_x])) {
+			board[start_index_y][start_index_x] = ' ';
+			board[target_index_y][target_index_x] = chosen_figure;
+			isNotYourTeam = true;
+		}
+	}
+	// Black Figure
+	else {
+		if (charIsUpperCase(board[target_index_y][target_index_x])) {
+			board[start_index_y][start_index_x] = ' ';
+			board[target_index_y][target_index_x] = chosen_figure;
+			isNotYourTeam = true;
+		}
+	}
+
 }
 
 void getCurrentColor() {
@@ -530,6 +557,7 @@ int main(void) {
 	int index_y = -1;
 	char chosen_figure = ' ';
 	bool isPossible = false;
+	bool isNotYourTeam = false;
 
 	print_board(); // Print the default chess board from sratch
 
@@ -551,13 +579,13 @@ int main(void) {
 
 		do {
 
-			chooseMovePosition(target_position, position_length, chosen_figure);
+			chooseMovePosition(target_position, position_length, chosen_figure, isNotYourTeam);
 
 			isPossible = checkType(target_position, current_position, chosen_figure);
 
 		} while (isPossible == false);
 
-		setPosition(target_position, current_position, chosen_figure);
+		setPosition(target_position, current_position, chosen_figure, isNotYourTeam);
 
 		print_board(); // Print the default chess board from sratch
 
