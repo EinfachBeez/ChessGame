@@ -29,8 +29,7 @@ bool current_player_white = false;
 int pawnvalue[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 int pawnblackvalue[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-void clearInputQueue()
-{
+void clearInputQueue() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 }
@@ -43,9 +42,9 @@ void print_board(void) {
 
 	// Print colom numbers
 	for (i = 0; i < 8; i++)
-	printf("    %d", i);
+		printf("    %d", i);
 	printf("\n");
-	
+
 	// Print all 8 Rows
 	for (k = 0; k < 8; k++) {
 		printf("  ");
@@ -103,12 +102,14 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 			if ((target_index_y + 1 == start_index_y || (target_index_y + 2 == start_index_y))) {
 				isLegal = true;
 			}
-		} else {
+		}
+		else {
 			if (target_index_y + 1 == start_index_y) {
 				isLegal = true;
 			}
 		}
-	} else {
+	}
+	else {
 		// Counts up the pawnblackvalue to check if this move is the first pawn move
 		pawnblackvalue[start_index_x]++;
 		// Checks if the pawnblackvalue is 1. When the value is 1 it's the first pawn move
@@ -116,7 +117,8 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 			if ((target_index_y - 1 == start_index_y) || (target_index_y - 2 == start_index_y)) {
 				isLegal = true;
 			}
-		} else {
+		}
+		else {
 			if (target_index_y - 1 == start_index_y) {
 				isLegal = true;
 			}
@@ -145,7 +147,26 @@ bool rook(int* target_position, int* start_position, char chosen_figure) {
 }
 
 bool night(int* target_position, int* start_position, char chosen_figure) {
+	// Can move in an "L" shape
 	bool isLegal = false;
+
+	// Start position axis
+	int start_index_x = start_position[0];
+	int start_index_y = start_position[1];
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+
+	if ((start_index_y - 1 == target_index_y) || (start_index_y + 1 == target_index_y)) {
+		if ((start_index_x - 2 == target_index_x) || (start_index_x + 2 == target_index_x)) {
+			isLegal = true;
+		}
+	}
+	else if ((start_index_y - 2 == target_index_y) || (start_index_y + 2 == target_index_y)) {
+		if ((start_index_x - 1 == target_index_x) || (start_index_x + 1 == target_index_x)) {
+			isLegal = true;
+		}
+	}
 
 	return isLegal;
 }
@@ -191,7 +212,8 @@ bool king(int* target_position, int* start_position, char chosen_figure) {
 
 	if ((target_index_x + 1 == start_index_x && target_index_y + 1 == start_index_y) || (target_index_x + 1 == start_index_x && target_index_y - 1 == start_index_y)) {
 		isLegal = true;
-	} else if ((target_index_x - 1 == start_index_x && target_index_y + 1 == start_index_y) || (target_index_x - 1 == start_index_x && target_index_y - 1 == start_index_y)) {
+	}
+	else if ((target_index_x - 1 == start_index_x && target_index_y + 1 == start_index_y) || (target_index_x - 1 == start_index_x && target_index_y - 1 == start_index_y)) {
 		isLegal = true;
 	}
 	else {
@@ -225,12 +247,15 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 
 	if ((target_difference_x == start_difference_y) || (target_difference_x == target_difference_y)) {
 		isLegal = true;
-	} else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
+	}
+	else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
 		isLegal = true;
-	} else {
+	}
+	else {
 		if ((target_index_x > start_index_x && target_difference_y == 0) || (target_index_x < start_index_x && target_difference_y == 0)) {
 			isLegal = true;
-		} else if ((target_index_y > start_index_y && target_difference_x == 0) || (target_index_y < start_index_y && target_difference_x == 0)) {
+		}
+		else if ((target_index_y > start_index_y && target_difference_x == 0) || (target_index_y < start_index_y && target_difference_x == 0)) {
 			isLegal = true;
 		}
 	}
@@ -243,7 +268,7 @@ bool chooseColor(void) {
 
 	printf("Welcome to Chess\nWhat color would you like to choose ? " ANSI_COLOR_MAGENTA "White (1) " ANSI_COLOR_CYAN "Black (2)\n" ANSI_COLOR_RESET);
 
-again:
+	again:
 
 	// Get user input to store the current color
 	scanf_s("%d", &input);
@@ -292,7 +317,7 @@ void chooseCurrentPosition(int* current_position, int current_position_length) {
 				//and then move number to array
 				current_position[k] = current_position_input[i] - '0';
 				//increase index if still allowed
-				if (k < current_position_length -1)
+				if (k < current_position_length - 1)
 					k++;
 			}
 		}
@@ -331,12 +356,14 @@ bool isYourColor(char chosen_figure) {
 			printf("Chosen figure " ANSI_COLOR_MAGENTA "%c " ANSI_COLOR_RED "is NOT " ANSI_COLOR_RESET "your color white.\n" ANSI_COLOR_RESET, chosen_figure);
 			return false;
 		}
-	} else {
+	}
+	else {
 		if (!charIsUpperCase(chosen_figure)) {
 			//I am black and the figure is also black
 			printf("Chosen figure " ANSI_COLOR_CYAN "%c " ANSI_COLOR_GREEN "is " ANSI_COLOR_RESET "your color black.\n", chosen_figure);
 			return true;
-		} else {
+		}
+		else {
 			//I am black but chosen figure is white..
 			printf("Chosen figure " ANSI_COLOR_CYAN "%c " ANSI_COLOR_RED "is NOT " ANSI_COLOR_RESET "your color black.\n", chosen_figure);
 			return false;
@@ -352,8 +379,7 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 	char position_input[4];
 	bool inBound = true;
 
-	do
-	{
+	do {
 		printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
 		// Get user input to store the position where the player wants to have his figure
@@ -395,49 +421,49 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure)
 bool checkType(int* target_position, int* start_position, char chosen_figure) {
 	// Get the type of this figure from getCurrentPosition() (King, Queen, ...)
 	// and check whether it is allowed to move to target position
-	
+
 	bool isPossible = false;
 
 	// Switch to x and y values from input
 	switch (chosen_figure) {
-	// Pawn White
+		// Pawn White
 	case 'P':
-	// Pawn Black
+		// Pawn Black
 	case 'p':
 		isPossible = pawn(target_position, start_position, chosen_figure);
 		break;
-	// Rook White
+		// Rook White
 	case 'R':
-	// Rook Black
+		// Rook Black
 	case 'r':
 		isPossible = rook(target_position, start_position, chosen_figure);
 		break;
-	// Night White
+		// Night White
 	case 'N':
-	// Night Black
+		// Night Black
 	case 'n':
 		isPossible = night(target_position, start_position, chosen_figure);
 		break;
-	// Bishop White
+		// Bishop White
 	case 'B':
-	// Bishop Black
+		// Bishop Black
 	case 'b':
 		isPossible = bishop(target_position, start_position, chosen_figure);
 		break;
-	// King White
+		// King White
 	case 'K':
-	// King Black
+		// King Black
 	case 'k':
 		isPossible = king(target_position, start_position, chosen_figure);
 		break;
-	// Queen White
+		// Queen White
 	case 'Q':
-	// Queen Black
+		// Queen Black
 	case 'q':
 		isPossible = queen(target_position, start_position, chosen_figure);
 		break;
 	default:
-		
+
 		break;
 	}
 
@@ -468,7 +494,29 @@ void getCurrentColor() {
 		printf("\nIt's " ANSI_COLOR_MAGENTA "whites " ANSI_COLOR_RESET "turn!\n");
 	else
 		printf("\nIt's " ANSI_COLOR_CYAN "blacks " ANSI_COLOR_RESET "turn!\n");
-} 
+}
+
+void onClose() {
+	// When user want to quit the game
+	char input;
+
+	printf("\nDo you want to quit the game? [y/n]\n");
+
+	scanf_s("%c", &input);
+	
+	switch (input) {
+	case 'y':
+	case 'Y':
+		exit(0);
+		break;
+	case 'n':
+	case 'N':
+	default:
+		printf("\nHave fun playing further!\n");
+		break;
+	}
+	clearInputQueue();
+}
 
 int main(void) {
 	bool end = false; // Boolean for exit
@@ -484,9 +532,9 @@ int main(void) {
 	bool isPossible = false;
 
 	print_board(); // Print the default chess board from sratch
-	
+
 	chooseColor(); // Welcome Screen where you can choose your color
-	
+
 	do {
 		// Loop to repeat all chess relevant tasks
 
@@ -513,11 +561,13 @@ int main(void) {
 
 		print_board(); // Print the default chess board from sratch
 
+		onClose();
+
 		getCurrentColor();
-		
-	// When end or win
+
+		// When end or win
 	} while (end == false);
-	
-	
+
+
 	return 0;
 }

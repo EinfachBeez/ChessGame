@@ -11,8 +11,6 @@ So the console will look a bit funny.
 
 ## ToDo
 
-- Night with "L" move
-- Exit Game option
 - Hit Enemy / Winning Condition
 - Check if the position is already used
 - No Jump Over (except night)
