@@ -387,7 +387,7 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure,
 
 	do {
 		do {
-			printf("One which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
+			printf("On which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
 			// Get user input to store the position where the player wants to have his figure
 			fgets(position_input, sizeof(position_input), stdin);
