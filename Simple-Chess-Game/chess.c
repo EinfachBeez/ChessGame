@@ -83,6 +83,12 @@ bool charIsUpperCase(char ch) {
 	else return false;
 }
 
+// Only for experimental use
+bool charIsLowerCase(char ch) {
+	if (ch >= 'a' && ch <= 'z') return true;
+	else return false;
+}
+
 bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	// Only can move one square forward
 	bool isLegal = false;
@@ -372,7 +378,7 @@ bool isYourColor(char chosen_figure) {
 
 }
 
-void chooseMovePosition(int* position, int position_length, char choosen_figure, bool isNotYourTeam) {
+void chooseMovePosition(int* position, int position_length, char choosen_figure, bool isNotYourTeam, int* target_position) {
 	// Get the position on which field the player wants to have his figure
 	//return position;
 	int i, k = 0;
@@ -416,15 +422,30 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure,
 
 			clearInputQueue();
 
-			// Todo: Check if position is possible or if there is a figure from another team there
-			if (charIsUpperCase(choosen_figure)) {
+			int target_index_x = target_position[0];
+			int target_index_y = target_position[1];
+			char target_figure = board[target_index_y][target_index_x];
+			isNotYourTeam = false;
 
+			// Todo: Mostly working, but if the first target position is wrong and the second one is right the old value is taken at target_index_x 
+			if (charIsUpperCase(choosen_figure)) {
+				if (charIsLowerCase(target_figure)) {
+					isNotYourTeam = true;
+				}
+				// If char is empty
+				else if (target_figure == ' ') {
+					isNotYourTeam = true;
+				}
+			}
+			else if (!charIsUpperCase(choosen_figure)) {
+				if (charIsUpperCase(target_figure)) {
+					isNotYourTeam = true;
+				}
 			}
 
 			if (isNotYourTeam == false) printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
 		} while (isNotYourTeam == false);
 	} while (inBound == false);
-
 }
 
 bool checkType(int* target_position, int* start_position, char chosen_figure) {
@@ -491,26 +512,8 @@ void setPosition(int* target_position, int* start_position, char chosen_figure, 
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
 
-	//
-	// INVALID
-	// Useless checks, todo: isNotYourTeam Check
-	// White Figure
-	if (charIsUpperCase(chosen_figure)) {
-		if (!charIsUpperCase(board[target_index_y][target_index_x])) {
-			board[start_index_y][start_index_x] = ' ';
-			board[target_index_y][target_index_x] = chosen_figure;
-			isNotYourTeam = true;
-		}
-	}
-	// Black Figure
-	else {
-		if (charIsUpperCase(board[target_index_y][target_index_x])) {
-			board[start_index_y][start_index_x] = ' ';
-			board[target_index_y][target_index_x] = chosen_figure;
-			isNotYourTeam = true;
-		}
-	}
-
+	board[start_index_y][start_index_x] = ' ';
+	board[target_index_y][target_index_x] = chosen_figure;
 }
 
 void getCurrentColor() {
@@ -579,7 +582,7 @@ int main(void) {
 
 		do {
 
-			chooseMovePosition(target_position, position_length, chosen_figure, isNotYourTeam);
+			chooseMovePosition(target_position, position_length, chosen_figure, isNotYourTeam, target_position);
 
 			isPossible = checkType(target_position, current_position, chosen_figure);
 
@@ -593,7 +596,7 @@ int main(void) {
 
 		getCurrentColor();
 
-		// When end or win
+		// ToDo: When end or win
 	} while (end == false);
 
 
