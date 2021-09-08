@@ -92,6 +92,7 @@ bool charIsLowerCase(char ch) {
 bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	// Only can move one square forward
 	bool isLegal = false;
+	int i;
 
 	//start position axis
 	int start_index_x = start_position[0];
@@ -99,6 +100,8 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	//target position axis
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
+
+	// ToDo: No Jump Over
 
 	if (current_player_white == true) {
 		// Counts up the pawnvalue to check if this move is the first pawn move 
@@ -269,7 +272,7 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	return isLegal;
 }
 
-bool chooseColor(void) {
+void chooseColor(void) {
 	int input;
 
 	printf("Welcome to Chess\nWhat color would you like to choose ? " ANSI_COLOR_MAGENTA "White (1) " ANSI_COLOR_CYAN "Black (2)\n" ANSI_COLOR_RESET);
@@ -553,7 +556,7 @@ void onClose(bool end) {
 	if (end == false) {
 		printf("\nDo you want to quit the game? [y/n]\n");
 
-		scanf_s("%c", &input);
+		scanf_s("%c", &input, 1);
 
 		switch (input) {
 		case 'y':

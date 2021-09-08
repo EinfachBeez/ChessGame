@@ -11,7 +11,6 @@ So the console will look a bit funny.
 
 ## ToDo
 
-- Check if the position is already used
 - No Jump Over (except night)
 - Pawn Rules (Hit Rule, Check rule for multible squares at first move, Pawn transform)
 - No king next to king
