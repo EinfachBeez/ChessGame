@@ -50,7 +50,7 @@ void print_board(void) {
 		printf("  ");
 
 		// Print all 8 rows
-		for (i = 0; i < 41; i++) {
+		for (i = 0; i < 42; i++) {
 			printf("-");
 		}
 
@@ -62,13 +62,13 @@ void print_board(void) {
 		for (j = 0; j < 8; j++) {
 			printf(" || %c", board[k][j]);
 		}
-		printf("||\n");
+		printf(" ||\n");
 	}
 
 	printf("  ");
 
 	// Print last row
-	for (i = 0; i < 41; i++) {
+	for (i = 0; i < 42; i++) {
 		printf("-");
 	}
 	printf("\n");
@@ -378,15 +378,16 @@ bool isYourColor(char chosen_figure) {
 
 }
 
-void chooseMovePosition(int* position, int position_length, char choosen_figure, bool isNotYourTeam, int* target_position) {
+void chooseMovePosition(int* target_position, int position_length, char choosen_figure, bool isNotYourTeam) {
 	// Get the position on which field the player wants to have his figure
-	//return position;
-	int i, k = 0;
+	//return target_position with inOut Parameter
+
 	char position_input[4];
 	bool inBound = true;
 
 	do {
 		do {
+			int i, k = 0;
 			printf("On which field do you want to have your %c figure? (ex. 2,2)\n", choosen_figure);
 
 			// Get user input to store the position where the player wants to have his figure
@@ -404,9 +405,9 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure,
 					if (isdigit(position_input[i])) {
 						//convert char-number into real int by calculating distance between ascii-characters
 						//and then move number to array
-						position[k] = position_input[i] - '0';
+						target_position[k] = position_input[i] - '0';
 
-						if (position[k] > 7 || position[k] < 0) {
+						if (target_position[k] > 7 || target_position[k] < 0) {
 							inBound = false;
 							printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
 							break;
@@ -437,8 +438,11 @@ void chooseMovePosition(int* position, int position_length, char choosen_figure,
 					isNotYourTeam = true;
 				}
 			}
-			else if (!charIsUpperCase(choosen_figure)) {
+			else if (charIsLowerCase(choosen_figure)) {
 				if (charIsUpperCase(target_figure)) {
+					isNotYourTeam = true;
+				}
+				else if (target_figure == ' ') {
 					isNotYourTeam = true;
 				}
 			}
@@ -582,7 +586,7 @@ int main(void) {
 
 		do {
 
-			chooseMovePosition(target_position, position_length, chosen_figure, isNotYourTeam, target_position);
+			chooseMovePosition(target_position, position_length, chosen_figure, isNotYourTeam);
 
 			isPossible = checkType(target_position, current_position, chosen_figure);
 
