@@ -496,9 +496,7 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 	case 'q':
 		isPossible = queen(target_position, start_position, chosen_figure);
 		break;
-	default:
-
-		break;
+	default: break;
 	}
 
 	if (isPossible == false) printf("This action is " ANSI_COLOR_RED "not possible!\n" ANSI_COLOR_RESET);
@@ -506,7 +504,7 @@ bool checkType(int* target_position, int* start_position, char chosen_figure) {
 	return isPossible;
 }
 
-void setPosition(int* target_position, int* start_position, char chosen_figure, bool isNotYourTeam) {
+void setPosition(int* target_position, int* start_position, char chosen_figure, bool isNotYourTeam, bool* end) {
 	// Set the position from the figure the player choose
 
 	//start position axis
@@ -516,40 +514,60 @@ void setPosition(int* target_position, int* start_position, char chosen_figure, 
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
 
+	char target_figure = board[target_index_y][target_index_x];
+
 	board[start_index_y][start_index_x] = ' ';
 	board[target_index_y][target_index_x] = chosen_figure;
+
+	switch (target_figure) {
+	case 'K':
+		printf("\nCongratulations. Black has won.\n\n");
+		*end = true;
+		break;
+	case 'k':
+		printf("\nCongratulations. White has won.\n\n");
+		*end = true;
+		break;
+	default: break;
+	}
 }
 
-void getCurrentColor() {
+void getCurrentColor(bool end) {
 	// Changes the Color from White to Black and Black to White via flag flip
 	current_player_white = !current_player_white;
 
-	if (current_player_white)
-		printf("\nIt's " ANSI_COLOR_MAGENTA "whites " ANSI_COLOR_RESET "turn!\n");
-	else
-		printf("\nIt's " ANSI_COLOR_CYAN "blacks " ANSI_COLOR_RESET "turn!\n");
+	if (end == false) {
+		if (current_player_white)
+			printf("\nIt's " ANSI_COLOR_MAGENTA "whites " ANSI_COLOR_RESET "turn!\n");
+		else
+			printf("\nIt's " ANSI_COLOR_CYAN "blacks " ANSI_COLOR_RESET "turn!\n");
+	}
+
+	
 }
 
-void onClose() {
+void onClose(bool end) {
 	// When user want to quit the game
 	char input;
 
-	printf("\nDo you want to quit the game? [y/n]\n");
+	if (end == false) {
+		printf("\nDo you want to quit the game? [y/n]\n");
 
-	scanf_s("%c", &input);
-	
-	switch (input) {
-	case 'y':
-	case 'Y':
-		exit(0);
-		break;
-	case 'n':
-	case 'N':
-	default:
-		printf("\nHave fun playing further!\n");
-		break;
+		scanf_s("%c", &input);
+
+		switch (input) {
+		case 'y':
+		case 'Y':
+			exit(0);
+			break;
+		case 'n':
+		case 'N':
+		default:
+			printf("\nHave fun playing further!\n");
+			break;
+		}
+		clearInputQueue();
 	}
-	clearInputQueue();
 }
 
 int main(void) {
@@ -592,13 +610,13 @@ int main(void) {
 
 		} while (isPossible == false);
 
-		setPosition(target_position, current_position, chosen_figure, isNotYourTeam);
+		setPosition(target_position, current_position, chosen_figure, isNotYourTeam, &end);
 
 		print_board(); // Print the default chess board from sratch
 
-		onClose();
+		onClose(end);
 
-		getCurrentColor();
+		getCurrentColor(end);
 
 		// ToDo: When end or win
 	} while (end == false);
