@@ -253,6 +253,7 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 			}
 		}
 	}
+	// Left-Bottom
 	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
 
@@ -297,6 +298,7 @@ bool king(int* target_position, int* start_position, char chosen_figure) {
 bool queen(int* target_position, int* start_position, char chosen_figure) {
 	// Can move any number of squares in any direction (vertically, horizontally, or diagonally)
 	bool isLegal = false;
+	int i, k;
 
 	// Start position axis
 	int start_index_x = start_position[0];
@@ -312,19 +314,77 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	int start_difference_x = start_index_x - target_index_x;
 	int start_difference_y = start_index_y - target_index_y;
 
-	if ((target_difference_x == start_difference_y) || (target_difference_x == target_difference_y)) {
+
+
+	// Right-Top
+	if (target_difference_x == start_difference_y) {
 		isLegal = true;
+
+		for (i = start_index_x + 1; i <= target_index_x; i++) {
+			for (k = start_index_y - 1; k >= target_index_y; k--) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
 	}
-	else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
+	// Left-Top
+	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
+
+		for (i = start_index_x - 1; i >= target_index_x; i--) {
+			for (k = start_index_y - 1; i >= target_index_y; k--) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
 	}
-	else {
-		if ((target_index_x > start_index_x && target_difference_y == 0) || (target_index_x < start_index_x && target_difference_y == 0)) {
-			isLegal = true;
+	// Right-Bottom
+	else if (target_difference_x == target_difference_y) {
+		isLegal = true;
+
+		for (i = start_index_x + 1; i <= target_index_x; i++) {
+			for (k = start_index_y + 1; k <= target_index_y; k++) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
 		}
-		else if ((target_index_y > start_index_y && target_difference_x == 0) || (target_index_y < start_index_y && target_difference_x == 0)) {
-			isLegal = true;
+	}
+	// Left-Bottom
+	else if (start_difference_x == start_difference_y) {
+		isLegal = true;
+
+		for (i = start_index_x - 1; i >= target_index_x; i--) {
+			for (k = start_index_y + 1; k <= target_index_y; k++) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
 		}
+	}
+
+	if ((target_index_x != start_index_x && target_index_y == start_index_y) || (target_index_y != start_index_y && target_index_x == start_index_x)) {
+		isLegal = true;
+
+		if (start_index_x == target_index_x) {
+			if (start_index_y > target_index_y) {
+				// y up
+				for (i = start_index_y - 1; i >= target_index_y; i--)
+					if (board[i][start_index_x] != ' ') isLegal = false;
+			}
+			else {
+				// y down
+				for (i = start_index_y + 1; i <= target_index_y; i++)
+					if (board[i][start_index_x] != ' ') isLegal = false;
+			}
+		}
+		else if (start_index_y == target_index_y) {
+			if (start_index_x > target_index_x) {
+				// x up
+				for (i = start_index_x - 1; i >= target_index_x; i--)
+					if (board[start_index_y][i] != ' ') isLegal = false;
+			}
+			else {
+				// x down
+				for (i = start_index_x + 1; i <= target_index_x; i++)
+					if (board[start_index_y][i] != ' ') isLegal = false;
+			}
+		}
+		else if (start_index_x == target_index_x && start_index_y == target_index_y) isLegal = false;
 	}
 
 	return isLegal;
