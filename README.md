@@ -11,7 +11,7 @@ So the console will look a bit funny.
 
 ## ToDo
 
-- No Jump Over (except night)
+- No Jump Over (except night) (Almost finished, fixed bugs tomorrow)
 - Pawn Rules (Hit Rule, Check rule for multible squares at first move, Pawn transform)
 - No king next to king
 - Patt (when both players have only one king left)
