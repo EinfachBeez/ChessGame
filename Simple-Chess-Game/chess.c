@@ -207,6 +207,7 @@ bool night(int* target_position, int* start_position, char chosen_figure) {
 bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	// Can move any number of squares diagonally
 	bool isLegal = false;
+	int i, k;
 
 	// Start position axis
 	int start_index_x = start_position[0];
@@ -222,11 +223,44 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	int start_difference_x = start_index_x - target_index_x;
 	int start_difference_y = start_index_y - target_index_y;
 
-	if ((target_difference_x == start_difference_y) || (target_difference_x == target_difference_y)) {
+	// Right-Top
+	if (target_difference_x == start_difference_y) {
 		isLegal = true;
+
+		for (i = start_index_x + 1; i <= target_index_x; i++) {
+			for (k = start_index_y - 1; k >= target_index_y; k--) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
 	}
-	else if ((start_difference_x == start_difference_y) || (start_difference_x == target_difference_y)) {
+	// Left-Top
+	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
+
+		for (i = start_index_x - 1; i >= target_index_x; i--) {
+			for (k = start_index_y - 1; i >= target_index_y; k--) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
+	}
+	// Right-Bottom
+	else if (target_difference_x == target_difference_y) {
+		isLegal = true;
+
+		for (i = start_index_x + 1; i <= target_index_x; i++) {
+			for (k = start_index_y + 1; k <= target_index_y; k++) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
+	}
+	else if (start_difference_x == start_difference_y) {
+		isLegal = true;
+
+		for (i = start_index_x - 1; i >= target_index_x; i--) {
+			for (k = start_index_y + 1; k <= target_index_y; k++) {
+				if (board[k][i] != ' ') isLegal = false;
+			}
+		}
 	}
 
 	return isLegal;
