@@ -92,7 +92,6 @@ bool charIsLowerCase(char ch) {
 bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	// Only can move one square forward
 	bool isLegal = false;
-	int i;
 
 	//start position axis
 	int start_index_x = start_position[0];
@@ -100,8 +99,6 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	//target position axis
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
-
-	// ToDo: No Jump Over
 
 	if (current_player_white == true) {
 		// Counts up the pawnvalue to check if this move is the first pawn move 
@@ -140,6 +137,7 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 bool rook(int* target_position, int* start_position, char chosen_figure) {
 	// Can move any number of squares horizontally or vertically
 	bool isLegal = false;
+	int i;
 
 	// Start position axis
 	int start_index_x = start_position[0];
@@ -148,10 +146,36 @@ bool rook(int* target_position, int* start_position, char chosen_figure) {
 	int target_index_x = target_position[0];
 	int target_index_y = target_position[1];
 
-
 	if ((target_index_x != start_index_x && target_index_y == start_index_y) || (target_index_y != start_index_y && target_index_x == start_index_x)) {
 		isLegal = true;
+
+		if (start_index_x == target_index_x) {
+			if (start_index_y > target_index_y) {
+				// y up
+				for (i = start_index_y - 1; i >= target_index_y; i--) 
+					if (board[i][start_index_x] != ' ') isLegal = false;
+			}
+			else {
+				// y down
+				for (i = start_index_y + 1; i <= target_index_y; i++)
+					if (board[i][start_index_x] != ' ') isLegal = false;
+			}
+		}
+		else if (start_index_y == target_index_y) {
+			if (start_index_x > target_index_x) {
+				// x up
+				for (i = start_index_x - 1; i >= target_index_x; i--)
+					if (board[start_index_y][i] != ' ') isLegal = false;
+			}
+			else {
+				// x down
+				for (i = start_index_x + 1; i <= target_index_x; i++)
+					if (board[start_index_y][i] != ' ') isLegal = false;
+			}
+		}
+		else if (start_index_x == target_index_x && start_index_y == target_index_y) isLegal = false;
 	}
+
 	return isLegal;
 }
 
