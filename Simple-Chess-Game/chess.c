@@ -151,25 +151,25 @@ bool rook(int* target_position, int* start_position, char chosen_figure) {
 
 		if (start_index_x == target_index_x) {
 			if (start_index_y > target_index_y) {
-				// y up
-				for (i = start_index_y - 1; i >= target_index_y; i--) 
+				// y up (exlude myself and target, since target is either empty or enemy)
+				for (i = start_index_y - 1; i > target_index_y; i--) 
 					if (board[i][start_index_x] != ' ') isLegal = false;
 			}
 			else {
 				// y down
-				for (i = start_index_y + 1; i <= target_index_y; i++)
+				for (i = start_index_y + 1; i < target_index_y; i++)
 					if (board[i][start_index_x] != ' ') isLegal = false;
 			}
 		}
 		else if (start_index_y == target_index_y) {
 			if (start_index_x > target_index_x) {
 				// x up
-				for (i = start_index_x - 1; i >= target_index_x; i--)
+				for (i = start_index_x - 1; i > target_index_x; i--)
 					if (board[start_index_y][i] != ' ') isLegal = false;
 			}
 			else {
 				// x down
-				for (i = start_index_x + 1; i <= target_index_x; i++)
+				for (i = start_index_x + 1; i < target_index_x; i++)
 					if (board[start_index_y][i] != ' ') isLegal = false;
 			}
 		}
