@@ -8,9 +8,3 @@ Inspired by the university homework "Assignment 4: A Simplified Single-player Ch
 
 The compiled version in /out/compile can be run on Windows, but there is no ANSI color support like on Linux. 
 So the console will look a bit funny.
-
-## ToDo
-
-- Pawn Rules (Pawn transform)
-- No king next to king (Useless)
-- Patt (when both players have only one king left) (Useless)
