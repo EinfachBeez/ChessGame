@@ -102,7 +102,21 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 
 	if (current_player_white == true) {
 		// Checks if the pawnvalue is 1. When the value is 1 it's the first pawn move
-		if (pawnvalue[start_index_x] == 0) {
+		
+		//special event for pawn: enemy is in a diagonal area and can be hit.
+
+		//check if in diagonal lines is an enemy figure
+		if (target_index_y - 1 == start_index_y) {
+			isLegal = false;
+		}
+		else if (target_index_x + 1 == start_index_x && target_index_y + 1 == start_index_y) {
+			isLegal = true;
+		}
+		else if (target_index_x - 1 == start_index_x && target_index_y + 1 == start_index_y) {
+			isLegal = true;
+		}
+
+		else if (pawnvalue[start_index_x] == 0) {
 			if ((target_index_y + 1 == start_index_y) || (target_index_y + 2 == start_index_y)) {
 				if (start_index_x == target_index_x) {
 					// Counts up the pawnvalue to check if this move is the first pawn move
@@ -118,10 +132,21 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 				isLegal = true;
 			}
 		}
+
 	}
 	else {
+
+		if (target_index_y + 1 == start_index_y) {
+			isLegal = false;
+		}
+		else if (target_index_x + 1 == start_index_x && target_index_y - 1 == start_index_y) {
+			isLegal = true;
+		}
+		else if (target_index_x - 1 == start_index_x && target_index_y - 1 == start_index_y) {
+			isLegal = true;
+		}
 		// Checks if the pawnblackvalue is 1. When the value is 1 it's the first pawn move
-		if (pawnblackvalue[start_index_x] == 1) {
+		else if (pawnblackvalue[start_index_x] == 0) {
 			if ((target_index_y - 1 == start_index_y) || (target_index_y - 2 == start_index_y)) {
 				if (start_index_x == target_index_x) {
 					// Counts up the pawnblackvalue to check if this move is the first pawn move
@@ -647,18 +672,6 @@ void setPosition(int* target_position, int* start_position, char chosen_figure, 
 
 	board[start_index_y][start_index_x] = ' ';
 	board[target_index_y][target_index_x] = chosen_figure;
-
-	//extra pawn rule
-	switch (chosen_figure) {
-	case 'P':
-	case 'p':
-		//check if in diagonal lines is an enemy figure
-
-		//move pawn to where the enemy was standing
-		break;
-	default:
-		break;
-	}
 
 	switch (target_figure) {
 	case 'K':
