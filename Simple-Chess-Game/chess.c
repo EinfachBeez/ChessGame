@@ -101,31 +101,39 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 	int target_index_y = target_position[1];
 
 	if (current_player_white == true) {
-		// Counts up the pawnvalue to check if this move is the first pawn move 
-		pawnvalue[start_index_x]++;
 		// Checks if the pawnvalue is 1. When the value is 1 it's the first pawn move
-		if (pawnvalue[start_index_x] == 1) {
-			if ((target_index_y + 1 == start_index_y || (target_index_y + 2 == start_index_y))) {
-				isLegal = true;
+		if (pawnvalue[start_index_x] == 0) {
+			if ((target_index_y + 1 == start_index_y) || (target_index_y + 2 == start_index_y)) {
+				if (start_index_x == target_index_x) {
+					// Counts up the pawnvalue to check if this move is the first pawn move
+					pawnvalue[start_index_x]++;
+					isLegal = true;
+				}
 			}
 		}
 		else {
-			if (target_index_y + 1 == start_index_y) {
+			if (target_index_y + 1 == start_index_y && start_index_x == target_index_x) {
+				// Counts up the pawnvalue to check if this move is the first pawn move
+				pawnvalue[start_index_x]++;
 				isLegal = true;
 			}
 		}
 	}
 	else {
-		// Counts up the pawnblackvalue to check if this move is the first pawn move
-		pawnblackvalue[start_index_x]++;
 		// Checks if the pawnblackvalue is 1. When the value is 1 it's the first pawn move
 		if (pawnblackvalue[start_index_x] == 1) {
 			if ((target_index_y - 1 == start_index_y) || (target_index_y - 2 == start_index_y)) {
-				isLegal = true;
+				if (start_index_x == target_index_x) {
+					// Counts up the pawnblackvalue to check if this move is the first pawn move
+					pawnblackvalue[start_index_x]++;
+					isLegal = true;
+				}
 			}
 		}
 		else {
-			if (target_index_y - 1 == start_index_y) {
+			if (target_index_y - 1 == start_index_y && start_index_x == target_index_x) {
+				// Counts up the pawnblackvalue to check if this move is the first pawn move
+				pawnblackvalue[start_index_x]++;
 				isLegal = true;
 			}
 		}
@@ -227,8 +235,8 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	if (target_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x + 1; i <= target_index_x; i++) {
-			for (k = start_index_y - 1; k >= target_index_y; k--) {
+		for (i = start_index_x + 1; i < target_index_x; i++) {
+			for (k = start_index_y - 1; k > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -237,8 +245,8 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x - 1; i >= target_index_x; i--) {
-			for (k = start_index_y - 1; i >= target_index_y; k--) {
+		for (i = start_index_x - 1; i > target_index_x; i--) {
+			for (k = start_index_y - 1; i > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -247,8 +255,8 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	else if (target_difference_x == target_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x + 1; i <= target_index_x; i++) {
-			for (k = start_index_y + 1; k <= target_index_y; k++) {
+		for (i = start_index_x + 1; i < target_index_x; i++) {
+			for (k = start_index_y + 1; k < target_index_y; k++) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -257,8 +265,8 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x - 1; i >= target_index_x; i--) {
-			for (k = start_index_y + 1; k <= target_index_y; k++) {
+		for (i = start_index_x - 1; i > target_index_x; i--) {
+			for (k = start_index_y + 1; k < target_index_y; k++) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -320,8 +328,8 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	if (target_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x + 1; i <= target_index_x; i++) {
-			for (k = start_index_y - 1; k >= target_index_y; k--) {
+		for (i = start_index_x + 1; i < target_index_x; i++) {
+			for (k = start_index_y - 1; k > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -330,8 +338,8 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x - 1; i >= target_index_x; i--) {
-			for (k = start_index_y - 1; i >= target_index_y; k--) {
+		for (i = start_index_x - 1; i > target_index_x; i--) {
+			for (k = start_index_y - 1; i > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -340,8 +348,8 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	else if (target_difference_x == target_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x + 1; i <= target_index_x; i++) {
-			for (k = start_index_y + 1; k <= target_index_y; k++) {
+		for (i = start_index_x + 1; i < target_index_x; i++) {
+			for (k = start_index_y + 1; k < target_index_y; k++) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -350,8 +358,8 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 	else if (start_difference_x == start_difference_y) {
 		isLegal = true;
 
-		for (i = start_index_x - 1; i >= target_index_x; i--) {
-			for (k = start_index_y + 1; k <= target_index_y; k++) {
+		for (i = start_index_x - 1; i > target_index_x; i--) {
+			for (k = start_index_y + 1; k < target_index_y; k++) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -363,24 +371,24 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 		if (start_index_x == target_index_x) {
 			if (start_index_y > target_index_y) {
 				// y up
-				for (i = start_index_y - 1; i >= target_index_y; i--)
+				for (i = start_index_y - 1; i > target_index_y; i--)
 					if (board[i][start_index_x] != ' ') isLegal = false;
 			}
 			else {
 				// y down
-				for (i = start_index_y + 1; i <= target_index_y; i++)
+				for (i = start_index_y + 1; i < target_index_y; i++)
 					if (board[i][start_index_x] != ' ') isLegal = false;
 			}
 		}
 		else if (start_index_y == target_index_y) {
 			if (start_index_x > target_index_x) {
 				// x up
-				for (i = start_index_x - 1; i >= target_index_x; i--)
+				for (i = start_index_x - 1; i > target_index_x; i--)
 					if (board[start_index_y][i] != ' ') isLegal = false;
 			}
 			else {
 				// x down
-				for (i = start_index_x + 1; i <= target_index_x; i++)
+				for (i = start_index_x + 1; i < target_index_x; i++)
 					if (board[start_index_y][i] != ' ') isLegal = false;
 			}
 		}
@@ -639,6 +647,18 @@ void setPosition(int* target_position, int* start_position, char chosen_figure, 
 
 	board[start_index_y][start_index_x] = ' ';
 	board[target_index_y][target_index_x] = chosen_figure;
+
+	//extra pawn rule
+	switch (chosen_figure) {
+	case 'P':
+	case 'p':
+		//check if in diagonal lines is an enemy figure
+
+		//move pawn to where the enemy was standing
+		break;
+	default:
+		break;
+	}
 
 	switch (target_figure) {
 	case 'K':
