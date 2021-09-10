@@ -686,6 +686,56 @@ void setPosition(int* target_position, int* start_position, char chosen_figure, 
 	}
 }
 
+void pawnTransformation(int* target_position, char chosen_figure) {
+	
+	//target position axis
+	int target_index_x = target_position[0];
+	int target_index_y = target_position[1];
+	int input;
+	char transformedFigure = ' ';
+
+	if ((chosen_figure == 'p' || chosen_figure == 'P') &&
+		(target_index_y == 0 || target_index_y == 7)) {
+		switch (chosen_figure) {
+		case 'P':
+		case 'p':	
+			printf("Your pawn on position (%d, %d) has reached the end. What do you want to turn into?\n Queen (1), Rook (2), Night (3), Bishop (4)\n", target_index_x, target_index_y);
+
+			scanf_s("%d", &input);
+			break;
+		default:
+			break;
+		}
+
+		switch (input) {
+		case 1:
+			transformedFigure = 'q';
+			break;
+		case 2:
+			transformedFigure = 'r';
+			break;
+		case 3:
+			transformedFigure = 'n';
+			break;
+		case 4:
+			transformedFigure = 'b';
+			break;
+		default:
+			break;
+		}
+
+		//make character upper case
+		if (current_player_white) {
+			transformedFigure = toupper(transformedFigure);
+		}
+
+		//set new transformed figure
+		board[target_index_y][target_index_x] = transformedFigure;
+
+		clearInputQueue();
+	}
+}
+
 void getCurrentColor(bool end) {
 	// Changes the Color from White to Black and Black to White via flag flip
 	current_player_white = !current_player_white;
@@ -765,6 +815,8 @@ int main(void) {
 		} while (isPossible == false);
 
 		setPosition(target_position, current_position, chosen_figure, isNotYourTeam, &end);
+
+		pawnTransformation(target_position, chosen_figure);
 
 		print_board(); // Print the default chess board from sratch
 
