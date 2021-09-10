@@ -115,7 +115,6 @@ bool pawn(int* target_position, int* start_position, char chosen_figure) {
 		else if (target_index_x - 1 == start_index_x && target_index_y + 1 == start_index_y) {
 			isLegal = true;
 		}
-
 		else if (pawnvalue[start_index_x] == 0) {
 			if ((target_index_y + 1 == start_index_y) || (target_index_y + 2 == start_index_y)) {
 				if (start_index_x == target_index_x) {
@@ -271,7 +270,7 @@ bool bishop(int* target_position, int* start_position, char chosen_figure) {
 		isLegal = true;
 
 		for (i = start_index_x - 1; i > target_index_x; i--) {
-			for (k = start_index_y - 1; i > target_index_y; k--) {
+			for (k = start_index_y - 1; k > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -364,7 +363,7 @@ bool queen(int* target_position, int* start_position, char chosen_figure) {
 		isLegal = true;
 
 		for (i = start_index_x - 1; i > target_index_x; i--) {
-			for (k = start_index_y - 1; i > target_index_y; k--) {
+			for (k = start_index_y - 1; k > target_index_y; k--) {
 				if (board[k][i] != ' ') isLegal = false;
 			}
 		}
@@ -582,7 +581,6 @@ void chooseMovePosition(int* target_position, int position_length, char choosen_
 			char target_figure = board[target_index_y][target_index_x];
 			isNotYourTeam = false;
 
-			// Todo: Mostly working, but if the first target position is wrong and the second one is right the old value is taken at target_index_x 
 			if (charIsUpperCase(choosen_figure)) {
 				if (charIsLowerCase(target_figure)) {
 					isNotYourTeam = true;
@@ -824,7 +822,6 @@ int main(void) {
 
 		getCurrentColor(end);
 
-		// ToDo: When end or win
 	} while (end == false);
 
 
