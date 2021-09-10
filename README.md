@@ -12,5 +12,5 @@ So the console will look a bit funny.
 ## ToDo
 
 - Pawn Rules (Pawn transform)
-- No king next to king
-- Patt (when both players have only one king left)
+- No king next to king (Useless)
+- Patt (when both players have only one king left) (Useless)
